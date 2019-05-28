@@ -2,6 +2,8 @@ const express = require('express');
 // const createError = require('http-errors');
 const router = express.Router();
 const User = require('../models/user');
+const parser = require('./../config/config');
+
 
 //MIDDLEWARE helper functions
 const {
@@ -29,10 +31,20 @@ router.get('/:id', isLoggedIn(),(req, res, next) => {
 
 //PUT '/edit'
 router.put('/edit', isLoggedIn(), (req, res, next) => {
-  const { username, picture, city, sports, email} = req.body;
+  const { username, city, sports, email, image} = req.body;
   console.log(req.session.currentUser);
   User.findByIdAndUpdate(req.session.currentUser, {$set: req.body}, {new: true})
    .then((user) => res.json(user))
 })
+
+// POST '/edit' images-cloudinary
+router.post('/edit', parser.single('photo'), (req, res, next) => {
+  console.log('file upload');
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+  };
+  const image = req.file.secure_url;
+  res.json(image).status(200);
+});
 
 module.exports = router;
