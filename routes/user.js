@@ -40,6 +40,7 @@ router.put('/edit', isLoggedIn(), (req, res, next) => {
 // POST '/edit' images-cloudinary
 router.post('/edit', parser.single('photo'), (req, res, next) => {
   console.log('file upload');
+  console.log(req.file);
   if (!req.file) {
     next(new Error('No file uploaded!'));
   };

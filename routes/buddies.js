@@ -8,13 +8,14 @@ const User = require('../models/user');
 //MIDDLEWARE functions
 const {isLoggedIn, isNotLoggedIn, validationLoggin,} = require('../helpers/middlewares');
 
-//  POST '/buddies'   add users buddie
+//  POST '/buddies'   add user buddie
 router.post('/', isLoggedIn(), (req, res, next) => {
-  const { userId, favoriteId } = req.body;
+  const { userId, buddieId } = req.body;
 
-  let favId = mongoose.Types.ObjectId(favoriteId);
+  let favId = mongoose.Types.ObjectId(buddieId);
 
-  User.findByIdAndUpdate(userId, { $push: { buddies: favId }} , {new: true})
+  User.findByIdAndUpdate(userId, { $push: { buddies: favId }} , {new: true}) ////push baby
+
   .then((user) => res.json(user))
   .catch((err) => res.status(400).send(err))
 })
@@ -31,11 +32,11 @@ router.get('/', isLoggedIn(),(req, res, next) => {
 })
 //DELETE '/buddieId'
 router.delete('/:buddieId', isLoggedIn(), (req,res,next) => {
-  const { favoriteId } = req.params;
+  const { buddieId } = req.params;
   const { _id } = req.session.currentUser;
 
 
-  User.findByIdAndUpdate(_id, { $pull: {buddies: favoriteId } }, {new: true})
+  User.findByIdAndUpdate(_id, { $pull: {buddies: buddieId } }, {new: true})
     .then((data) => res.json(data))
     .catch((err)=>console.log(err))
 
