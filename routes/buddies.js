@@ -30,15 +30,17 @@ router.get('/', isLoggedIn(),(req, res, next) => {
   .then((myself) => res.json(myself.buddies))
   .catch((err) => console.log(err))
 })
+
+
+
 //DELETE '/buddieId'
 router.delete('/:buddieId', isLoggedIn(), (req,res,next) => {
   const { buddieId } = req.params;
   const { _id } = req.session.currentUser;
 
-
-  User.findByIdAndUpdate(_id, { $pull: {buddies: buddieId } }, {new: true})
+  User.findByIdAndUpdate( _id, { $pull: {buddies: buddieId } }, {new: true})
     .then((data) => res.json(data))
-    .catch((err)=>console.log(err))
+    .catch((err) => console.log(err))
 
 })
 

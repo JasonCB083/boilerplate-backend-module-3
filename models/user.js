@@ -8,7 +8,7 @@ const userSchema = new Schema({
   email: String,
   city: String,
   image: String,
-  sport: [{ type: ObjectId, ref: 'Sport'}],
+  sport: [{ type: ObjectId, unique : true, ref: 'Sport'}],
   buddies: [{ type: ObjectId, ref: 'User'}]
 }, {
   timestamps: {

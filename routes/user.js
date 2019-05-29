@@ -19,6 +19,17 @@ router.get('/', isLoggedIn(), (req, res, next) => {
     .catch((err) => console.log(err))
 })
 
+//GET PREFERENCES
+router.get('/', isLoggedIn(),(req, res, next) => {
+  const { _id } = req.session.currentUser;
+  console.log('you have a hobbie')
+
+  User.findById(_id)
+  .populate('sports')
+  .then((myself) => res.json(myself.sports))
+  .catch((err) => console.log(err))
+})
+
 //GET  'profile/:id' get all users
 router.get('/:id', isLoggedIn(),(req, res, next) => {
   const { id } = req.params;
